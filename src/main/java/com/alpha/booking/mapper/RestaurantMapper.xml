@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alpha.booking.dao.RestaurantMapper">
+  <resultMap id="BaseResultMap" type="com.alpha.booking.model.Restaurant">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="restaurant_name" jdbcType="VARCHAR" property="restaurantName" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="license" jdbcType="VARCHAR" property="license" />
+    <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
+    <result column="table_count" jdbcType="INTEGER" property="tableCount" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, restaurant_name, telphone, province, city, district, address, latitude, longitude, 
+    create_time, owner, license, qr_code, table_count, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from restaurant
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>
