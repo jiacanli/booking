@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alpha.booking.dao.SellItemMapper">
   <resultMap id="BaseResultMap" type="com.alpha.booking.model.SellItem">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="orig_price" jdbcType="DOUBLE" property="origPrice" />
     <result column="price" jdbcType="DOUBLE" property="price" />
@@ -15,14 +15,70 @@
     <result column="category" jdbcType="INTEGER" property="category" />
     <result column="is_soldout" jdbcType="INTEGER" property="isSoldout" />
   </resultMap>
+  
+  
+  <resultMap id="SellItemWithCategory" type="com.alpha.booking.model.CategoryWithItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="restaurant_id" jdbcType="VARCHAR" property="restaurantId" />    
+    <collection property="sellItems" ofType="com.alpha.booking.model.SellItem" >
+         <result column="id" jdbcType="BIGINT" property="id" />
+         <result column="name" property="name"/>
+         <result column="orig_price" property="origPrice"/>
+         <result column="unit" property="unit"/>     
+         <result column="restaurant_id" property="restaurantId"/>   
+         <result column="image" property="image"/>   
+         <result column="description" property="description"/>   
+         <result column="order_num" property="orderNum"/>   
+         <result column="category" property="category"/>   
+         <result column="is_soldout" property="isSoldout"/>   
+    </collection>
+  </resultMap>
+  
+  
   <sql id="Base_Column_List">
     id, name, orig_price, price, unit, restaurant_id, image, description, order_num, 
     discount, category, is_soldout
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sell_item
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
+  
+  
+  <select id="selectAllItemsByRestaurantId" parameterType="java.lang.String" resultMap="SellItemWithCategory">
+SELECT
+	category.id,
+	category.category_name,
+	category.restaurant_id,
+	sell_item.category,
+	sell_item.description,
+	sell_item.discount,
+	sell_item.id,
+	sell_item.image,
+	sell_item.is_soldout,
+	sell_item.`name`,
+	sell_item.order_num,
+	sell_item.orig_price,
+	sell_item.price,
+	sell_item.restaurant_id,
+	sell_item.unit
+FROM
+	category,
+	sell_item,
+	restaurant
+WHERE
+	restaurant.id = #{id}
+AND restaurant.id = sell_item.restaurant_id
+AND sell_item.restaurant_id = category.restaurant_id
+AND sell_item.category = category.id      
+           
+  </select>
+  
+  
+  
+  
+  
 </mapper>

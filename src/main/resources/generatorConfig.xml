@@ -38,25 +38,8 @@
 			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
 			   tableName="category" domainObjectName="Category"></table>
 
-		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
-			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="discount" domainObjectName="Discount"></table>
-		
-		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
-			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="order" domainObjectName="Order"></table>
 
-		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
-			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="order_item" domainObjectName="OrderItem"></table>
-		
-		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
-			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="restaurant" domainObjectName="Restaurant"></table>
 
-		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
-			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="sell_item" domainObjectName="SellItem"></table>
 		
 		
 

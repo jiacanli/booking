@@ -5,6 +5,8 @@ public class Category {
 
     private String categoryName;
 
+    private Long restaurantId;
+
     public Integer getId() {
         return id;
     }
@@ -19,5 +21,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName == null ? null : categoryName.trim();
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

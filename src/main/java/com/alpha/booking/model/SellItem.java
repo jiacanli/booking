@@ -1,7 +1,14 @@
 package com.alpha.booking.model;
 
-public class SellItem {
-    private Integer id;
+import java.io.Serializable;
+
+public class SellItem implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5712177468185538099L;
+
+	private Long id;
 
     private String name;
 
@@ -25,11 +32,11 @@ public class SellItem {
 
     private Integer isSoldout;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
