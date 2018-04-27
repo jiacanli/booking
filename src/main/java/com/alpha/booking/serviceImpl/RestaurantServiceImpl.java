@@ -17,7 +17,7 @@ import com.alpha.common.web.ResultMapUtils;
 public class RestaurantServiceImpl implements RestaurantService  {
 	@Autowired
 	private SellItemMapper mapper;
-
+	
 	public DataModel<Object> register(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
@@ -27,6 +27,11 @@ public class RestaurantServiceImpl implements RestaurantService  {
 		// TODO Auto-generated method stub
 		List<CategoryWithItem> list = mapper.selectAllItemsByRestaurantId(restaurant_id);
 		return ResultMapUtils.getResultMap(list);
+	}
+
+	public DataModel<Object> getDetail(String restaurant_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

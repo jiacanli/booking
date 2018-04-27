@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alpha.booking.dao.OrderMapper;
 import com.alpha.booking.model.Order;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.Redis;
@@ -15,16 +16,14 @@ import redis.clients.jedis.Jedis;
 
 @Service
 public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderService {
+	
+	
 
 	public OrderServiceImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public DataModel<Object> insertOrder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	public DataModel<Object> additem(String restaurant_id, String table_num, String item_detail) {
@@ -41,5 +40,22 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 		redis.close();
 		return ResultMapUtils.getResultMap(last_updated);
 	}
+
+
+
+
+	public DataModel<Object> insertOrder(Order order) {
+		// TODO Auto-generated method stub
+		order.setCreateTime(new Date());
+		OrderMapper mapper = (OrderMapper) super.getMapper();
+		int result =mapper.insert0(order);
+		
+		return result==0?ResultMapUtils.getFailResultMap("400", "插入失败")
+				:ResultMapUtils.getResultMap("插入成功", "");
+	}
+
+
+
+
 
 }

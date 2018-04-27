@@ -11,10 +11,4 @@
   <sql id="Base_Column_List">
     id, order_num, item_id, amount, price
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from order_item
-    where id = #{id,jdbcType=INTEGER}
-  </select>
 </mapper>

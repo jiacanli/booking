@@ -12,6 +12,15 @@ public class Redis {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+	public static class prefix{
+		public static final String ORDER = "order";
+		public static final String ITEM = "item";
+	}
+	
+	
+	
 	private static  RedisConnectionPool POOL ;
 	
 	public static Jedis getInstance() {

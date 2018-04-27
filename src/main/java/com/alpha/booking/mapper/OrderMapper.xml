@@ -14,10 +14,11 @@
   <sql id="Base_Column_List">
     order_num, create_time, status, total, comment, join_discount, restaurant_id, table_num
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from order
-    where order_num = #{orderNum,jdbcType=VARCHAR}
-  </select>
+  
+  <insert id="insert0" parameterType="com.alpha.booking.model.Order">
+      INSERT INTO `order` (`order_num`, `create_time`, `status`, `total`, `comment`, `join_discount`, `restaurant_id`, `table_num`) 
+      VALUES (#{orderNum},#{createTime},#{status},#{total},#{comment},#{joinDiscount},#{restaurantId},#{tableNum})
+      
+      
+  </insert>
 </mapper>
