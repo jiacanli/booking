@@ -2,16 +2,16 @@ package com.alpha.booking.model;
 
 import java.util.Date;
 
-public class Order {
+public class Orders {
     private String orderNum;
 
     private Date createTime;
 
-    private Integer status;
+    private Integer orderStatus;
 
     private Double total;
 
-    private String comment;
+    private String comments;
 
     private String joinDiscount;
 
@@ -35,12 +35,12 @@ public class Order {
         this.createTime = createTime;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setOrderStatus(Integer status) {
+        this.orderStatus = status;
     }
 
     public Double getTotal() {
@@ -51,12 +51,12 @@ public class Order {
         this.total = total;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment == null ? null : comment.trim();
+    public void setComments(String comment) {
+        this.comments = comment == null ? null : comment.trim();
     }
 
     public String getJoinDiscount() {

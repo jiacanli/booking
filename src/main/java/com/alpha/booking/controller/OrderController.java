@@ -4,11 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alpha.booking.model.Order;
+import com.alpha.booking.model.Orders;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.ParamPreCheck;
+import com.alpha.common.connect.test;
 import com.alpha.common.web.DataModel;
 import com.alpha.common.web.ResultMapUtils;
 
@@ -39,8 +41,14 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/create")
-	public DataModel<Object> insert(Order order){		
+	public DataModel<Object> insert(Orders order){		
 		return service.insertOrder(order);
+	}
+	
+	@RequestMapping("/find")
+	public DataModel<Object> find(@RequestParam(value="restaurant_id",required=true)String restaurant_id){
+		return service.findByRestaurantId(restaurant_id);
+		
 	}
 	
 	
