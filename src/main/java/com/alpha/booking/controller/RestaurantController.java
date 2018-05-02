@@ -33,5 +33,10 @@ public class RestaurantController {
 		return service.getAllItems(restaurant_id);
 		
 	}
+	
+	@RequestMapping("/categories")
+	public DataModel<Object> getCategory(){
+		return null;
+	}
 
 }
