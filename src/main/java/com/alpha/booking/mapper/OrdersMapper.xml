@@ -16,7 +16,7 @@
   </sql>
   
   <insert id="insert0" parameterType="com.alpha.booking.model.Orders">
-      INSERT INTO `order` (`order_num`, `create_time`, `order_status`, `total`, `comments`, `join_discount`, `restaurant_id`, `table_num`) 
+      INSERT INTO `orders` (`order_num`, `create_time`, `order_status`, `total`, `comments`, `join_discount`, `restaurant_id`, `table_num`) 
       VALUES (#{orderNum},#{createTime},#{orderStatus},#{total},#{comments},#{joinDiscount},#{restaurantId},#{tableNum})      
   </insert>
 </mapper>

@@ -58,6 +58,14 @@ public class OrderController {
 		
 	}
 	
+	@RequestMapping("/tableorder")
+	public DataModel<Object> tableorder(
+			@RequestParam(value="restaurant_id",required=true)String restaurant_id,
+			@RequestParam(value="table_num",required=true)String table_num){
+		return service.findByRestaurantIdAndTable(restaurant_id, table_num);
+		
+	}
+	
 	
 
 }

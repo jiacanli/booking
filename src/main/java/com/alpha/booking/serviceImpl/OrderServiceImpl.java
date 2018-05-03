@@ -126,11 +126,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 
 	public DataModel<Object> insertOrder(Orders order) {
 		// TODO Auto-generated method stub
-		//插入之前首先获取锁(防止并发插入)
+		
 		Jedis redis = Redis.getInstance();
 		String lock_key = order.getRestaurantId()+Redis.prefix.PAY_LOCK+order.getTableNum();
 		String key = order.getRestaurantId()+Redis.prefix.ORDER+order.getTableNum();
 		ItemCart cart = JSONObject.parseObject(redis.get(key), ItemCart.class);
+		//插入之前首先获取锁(防止并发插入)
 		if(!Redis.tryLock(redis, lock_key, Redis.prefix.PAY_LOCK, 10)) {
 			//加锁失败
 			return ResultMapUtils.getFailResultMap("400", "其他小伙伴正在提交");
@@ -185,24 +186,42 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			Date now = new Date();
 			ItemCart cart = JSONObject.parseObject(redis.get(key), ItemCart.class);
 			Date last_op_date = cart.getLast_op_time();
-			if(time_diff(now.getTime(), last_op_date.getTime())<1800) {
+			if(time_diff(now.getTime(), last_op_date.getTime())<1800&&!cart.isFinished()) {
 				redis.close();
 				return ResultMapUtils.getResultMap("已存在订单", cart.getOrder_num());
 			}
 		}
-		String order_num = OrderUtil.newOrder();
-		ItemCart cart = new ItemCart(order_num
-				,Long.parseLong(restaurant_id),table_num);
-		//防止并发覆盖
-		redis.setnx(key, cart.toString());
-		redis.close();
-		return ResultMapUtils.getResultMap("订单生成成功", order_num);
+		String key_lock = restaurant_id+Redis.prefix.NEW_ORDER_LOCK+table_num;
+		//生成新订单前上锁
+		if(Redis.tryLock(redis, key_lock, Redis.prefix.NEW_ORDER_LOCK, 10)) {
+			String order_num = OrderUtil.newOrder();
+			ItemCart new_cart = new ItemCart(order_num
+					,Long.parseLong(restaurant_id),table_num);
+			//防止并发覆盖
+			redis.set(key, new_cart.toString());
+			Redis.releaseLock(redis, key_lock, Redis.prefix.NEW_ORDER_LOCK);
+			redis.close();
+			return ResultMapUtils.getResultMap("订单生成成功", order_num);
+		}
+		
+		return ResultMapUtils.getResultMap("400", "订单正在生成");
+
 	}
 
 	
 	
 	private Long time_diff(Long time1,Long time2) {
 		return (time1-time2)/1000;
+	}
+
+
+
+	public DataModel<Object> findByRestaurantIdAndTable(String id, String table_num) {
+		// TODO Auto-generated method stub
+		Jedis redis =Redis.getInstance();
+		ItemCart result = JSONObject.parseObject(redis.get(id+Redis.prefix.ORDER+table_num), ItemCart.class);
+		redis.close();
+		return ResultMapUtils.getResultMap("获取成功", result);
 	}
 
 

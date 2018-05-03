@@ -26,6 +26,7 @@ public class Redis {
 		public static final String ORDER = "order";
 		public static final String ITEM = "item";
 		public static final String PAY_LOCK = "pay-lock";
+		public static final String NEW_ORDER_LOCK = "new-order-lock";
 		
 	}
 	
