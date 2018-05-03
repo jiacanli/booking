@@ -40,13 +40,6 @@
     id, name, orig_price, price, unit, restaurant_id, image, description, order_num, 
     discount, category, is_soldout
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from sell_item
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  
   
   <select id="selectAllItemsByRestaurantId" parameterType="java.lang.String" resultMap="SellItemWithCategory">
 SELECT
@@ -78,7 +71,10 @@ AND sell_item.category = category.id
   </select>
   
   
-  
+  <select id="selectAllItemsByRestaurantId0" parameterType="java.lang.Long" resultType="com.alpha.booking.model.SellItem">
+      select * from sell_item where restaurant_id = #{id}
+      
+  </select>
   
   
 </mapper>

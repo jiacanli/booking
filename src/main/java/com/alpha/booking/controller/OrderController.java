@@ -40,9 +40,16 @@ public class OrderController {
 		
 	}
 	
-	@RequestMapping("/create")
+	@RequestMapping("/insert")
 	public DataModel<Object> insert(Orders order){		
 		return service.insertOrder(order);
+	}
+	
+	@RequestMapping("/neworder")
+	public DataModel<Object> neworder(
+			@RequestParam(value="restaurant_id",required=true)String restaurant_id
+			,@RequestParam(value="table_num",required=true)String table_num ){
+		return service.createOrder(restaurant_id, table_num);
 	}
 	
 	@RequestMapping("/find")

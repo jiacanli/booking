@@ -7,11 +7,20 @@ import java.util.Map;
 import org.springframework.http.StreamingHttpOutputMessage;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.jdi.connect.Connector.BooleanArgument;
 
 public class ItemCart {
-
+	
 	public ItemCart() {
-		// TODO Auto-generated constructor stub
+		
+	}
+
+	public ItemCart(String order_num,Long restaurant_id,String table_num) {
+		// TODO Auto-generated constructor stub	
+		this.order_num = order_num;
+		this.last_op_time = new Date();
+		this.table_num = table_num;
+		this.restaurant_id = restaurant_id;
 	}
 	
 	
@@ -20,11 +29,23 @@ public class ItemCart {
 	private Long restaurant_id;
 	private Map<Long, Integer> items = new HashMap<Long, Integer>();
 	private String table_num;
+	// 是否已经提交
+	private boolean finished = false;
+	// 是否已经结算
+	private boolean paied = false;
 	
-	
-	
-	
-	
+	public boolean isFinished() {
+		return finished;
+	}
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+	public boolean isPaied() {
+		return paied;
+	}
+	public void setPaied(boolean paied) {
+		this.paied = paied;
+	}
 	public String getOrder_num() {
 		return order_num;
 	}

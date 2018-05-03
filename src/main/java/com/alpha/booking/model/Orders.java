@@ -17,7 +17,7 @@ public class Orders {
 
     private Long restaurantId;
 
-    private Integer tableNum;
+    private String tableNum;
 
     public String getOrderNum() {
         return orderNum;
@@ -75,11 +75,11 @@ public class Orders {
         this.restaurantId = restaurantId;
     }
 
-    public Integer getTableNum() {
+    public String getTableNum() {
         return tableNum;
     }
 
-    public void setTableNum(Integer tableNum) {
+    public void setTableNum(String tableNum) {
         this.tableNum = tableNum;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alpha.booking.service.DiscountService;
 import com.alpha.booking.service.RestaurantService;
 import com.alpha.common.web.DataModel;
 @RestController
@@ -15,6 +16,9 @@ import com.alpha.common.web.DataModel;
 public class RestaurantController {
 	@Autowired
 	private RestaurantService service; 
+	
+	@Autowired
+	private DiscountService discountService;
 	
 	public RestaurantController() {
 		// TODO Auto-generated constructor stub
@@ -28,15 +32,23 @@ public class RestaurantController {
 	
 	@RequestMapping("/items")
 	public DataModel<Object> getItems(
-			@RequestParam(value="restaurant_id",required=true)String restaurant_id){
+			@RequestParam(value="restaurant_id",required=true)Long restaurant_id){
 		
 		return service.getAllItems(restaurant_id);
 		
 	}
 	
 	@RequestMapping("/categories")
-	public DataModel<Object> getCategory(){
-		return null;
+	public DataModel<Object> getCategory(@RequestParam(value="restaurant_id",required=true)Long restaurant_id){
+		return service.getCategory(restaurant_id);
+	}
+	
+	@RequestMapping("/discounts")
+	public DataModel<Object> getdiscount(
+		@RequestParam(value="restaurant_id",required=true)Long restaurant_id){
+		
+		return discountService.selectByid(restaurant_id);	
+		
 	}
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.alpha.booking.dao.OrderMapper">
+<mapper namespace="com.alpha.booking.dao.OrdersMapper">
   <resultMap id="BaseResultMap" type="com.alpha.booking.model.Orders">
     <id column="order_num" jdbcType="VARCHAR" property="orderNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -9,7 +9,7 @@
     <result column="comments" jdbcType="VARCHAR" property="comments" />
     <result column="join_discount" jdbcType="VARCHAR" property="joinDiscount" />
     <result column="restaurant_id" jdbcType="BIGINT" property="restaurantId" />
-    <result column="table_num" jdbcType="INTEGER" property="tableNum" />
+    <result column="table_num" jdbcType="VARCHAR" property="tableNum" />
   </resultMap>
   <sql id="Base_Column_List">
     order_num, create_time, order_status, total, comments, join_discount, restaurant_id, table_num
