@@ -45,7 +45,7 @@ public class OrderController {
 		return service.insertOrder(order);
 	}
 	
-	@RequestMapping("/neworder")
+	@RequestMapping("/syncorder")
 	public DataModel<Object> neworder(
 			@RequestParam(value="restaurant_id",required=true)String restaurant_id
 			,@RequestParam(value="table_num",required=true)String table_num ){

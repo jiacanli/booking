@@ -10,13 +10,14 @@
     <result column="join_discount" jdbcType="VARCHAR" property="joinDiscount" />
     <result column="restaurant_id" jdbcType="BIGINT" property="restaurantId" />
     <result column="table_num" jdbcType="VARCHAR" property="tableNum" />
+    <result column="items" jdbcType="VARCHAR" property="items" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_num, create_time, order_status, total, comments, join_discount, restaurant_id, table_num
+    order_num, create_time, order_status, total, comments, join_discount, restaurant_id, table_num,items
   </sql>
   
   <insert id="insert0" parameterType="com.alpha.booking.model.Orders">
-      INSERT INTO `orders` (`order_num`, `create_time`, `order_status`, `total`, `comments`, `join_discount`, `restaurant_id`, `table_num`) 
-      VALUES (#{orderNum},#{createTime},#{orderStatus},#{total},#{comments},#{joinDiscount},#{restaurantId},#{tableNum})      
+      INSERT INTO `orders` (`order_num`, `create_time`, `order_status`, `total`, `comments`, `join_discount`, `restaurant_id`, `table_num`,`items`) 
+      VALUES (#{orderNum},#{createTime},#{orderStatus},#{total},#{comments},#{joinDiscount},#{restaurantId},#{tableNum},#{items})      
   </insert>
 </mapper>

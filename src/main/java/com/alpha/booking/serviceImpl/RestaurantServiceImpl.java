@@ -4,15 +4,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.aspectj.weaver.AjAttribute.PrivilegedAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.support.logging.Log;
 import com.alpha.booking.dao.CategoryMapper;
+import com.alpha.booking.dao.RestaurantMapper;
 import com.alpha.booking.dao.SellItemMapper;
 import com.alpha.booking.model.Category;
-import com.alpha.booking.model.CategoryWithItem;
+import com.alpha.booking.model.Restaurant;
 import com.alpha.booking.model.SellItem;
 import com.alpha.booking.service.RestaurantService;
 import com.alpha.common.web.DataModel;
@@ -22,7 +21,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
-public class RestaurantServiceImpl implements RestaurantService  {
+public class RestaurantServiceImpl extends BaseServiceImpl<Restaurant> implements RestaurantService  {
 	@Autowired
 	private SellItemMapper mapper;
 	
@@ -45,7 +44,12 @@ public class RestaurantServiceImpl implements RestaurantService  {
 
 	public DataModel<Object> getDetail(Long restaurant_id) {
 		// TODO Auto-generated method stub
-		return null;
+		RestaurantMapper mapper = (RestaurantMapper) super.getMapper();
+		Example example = new Example(Restaurant.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("id", restaurant_id);
+		return ResultMapUtils.getResultMap(mapper.selectByExample(example));
+		
 	}
 	
 	//获取所有分类品种 

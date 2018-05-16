@@ -5,11 +5,21 @@ public class OrderItem {
 
     private String orderNum;
 
-    private Long itemId;
+    private Long itemId; // 菜品id
 
-    private Integer amount;
+    private Integer amount; // 点菜数量
 
-    private Double price;
+    private Double price; // 总价
+    
+    
+    
+    public OrderItem(String order_num,Long item_id,int amount,double price) {
+    	this.amount = amount;
+    	this.orderNum  = order_num;
+    	this.price = price;
+    	this.itemId = item_id;
+    }
+    
 
     public Integer getId() {
         return id;

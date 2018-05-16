@@ -22,12 +22,6 @@
     id, restaurant_name, telphone, province, city, district, address, latitude, longitude, 
     create_time, owner, license, qr_code, table_count, remark
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from restaurant
-    where id = #{id,jdbcType=BIGINT}
-  </select>
   
   
   

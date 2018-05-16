@@ -1,6 +1,7 @@
 package com.alpha.booking.serviceImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.dao.OrderItemMapper;
 import com.alpha.booking.dao.OrdersMapper;
 import com.alpha.booking.model.ItemCart;
+import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.Orders;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.OrderUtil;
@@ -75,6 +77,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		}
 		//开启事务
 		Transaction tx = redis.multi();
+		cart.setLast_op_time(new Date());
 		tx.set(key, cart.toString());
 		List<Object> result = tx.exec();
 		//结果为null说明事务执行失败
@@ -134,7 +137,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		//插入之前首先获取锁(防止并发插入)
 		if(!Redis.tryLock(redis, lock_key, Redis.prefix.PAY_LOCK, 10)) {
 			//加锁失败
-			return ResultMapUtils.getFailResultMap("400", "其他小伙伴正在提交");
+			return ResultMapUtils.getFailResultMap("400", "其他小伙伴正在提交订单");
 		}
 		if(cart.isFinished()) {
 			return ResultMapUtils.getFailResultMap("400", "该订单已经完成");
@@ -142,11 +145,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		order.setCreateTime(new Date());
 		OrdersMapper mapper = (OrdersMapper) super.getMapper();
 		int result =mapper.insert0(order);
+		//插入订单成功，下面插入订单详情到order_item
 		if(result!=0) {
 			cart.setFinished(true);
 			redis.set(key, cart.toString());
 			Redis.releaseLock(redis, lock_key, Redis.prefix.PAY_LOCK);
 			redis.close();
+			//开始插入订单明细item
+			List<OrderItem> items = parseItems(order.getItems(), order.getOrderNum());
+			int order_item_result = orderItemMapper.insertList(items);						
 			return ResultMapUtils.getResultMap("插入操作成功", "");
 
 			
@@ -188,7 +195,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			Date last_op_date = cart.getLast_op_time();
 			if(time_diff(now.getTime(), last_op_date.getTime())<1800&&!cart.isFinished()) {
 				redis.close();
-				return ResultMapUtils.getResultMap("已存在订单", cart.getOrder_num());
+				return ResultMapUtils.getResultMap("已存在订单", cart);
 			}
 		}
 		String key_lock = restaurant_id+Redis.prefix.NEW_ORDER_LOCK+table_num;
@@ -201,7 +208,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			redis.set(key, new_cart.toString());
 			Redis.releaseLock(redis, key_lock, Redis.prefix.NEW_ORDER_LOCK);
 			redis.close();
-			return ResultMapUtils.getResultMap("订单生成成功", order_num);
+			ItemCart result = new ItemCart();
+			result.setOrder_num(order_num);
+			result.setRestaurant_id(Long.parseLong(restaurant_id));
+			result.setTable_num(table_num);			
+			return ResultMapUtils.getResultMap("订单生成成功", result);
 		}
 		
 		return ResultMapUtils.getResultMap("400", "订单正在生成");
@@ -222,6 +233,23 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		ItemCart result = JSONObject.parseObject(redis.get(id+Redis.prefix.ORDER+table_num), ItemCart.class);
 		redis.close();
 		return ResultMapUtils.getResultMap("获取成功", result);
+	}
+	
+	/*
+	 * 组装OrderItem实例
+	 */
+	private List<OrderItem> parseItems(String items,String order_num){
+		JSONArray items_json = JSONArray.parseArray(items);
+		List<OrderItem> result = new ArrayList<OrderItem>();
+		for(int i=0;i<items_json.size();i++) {
+			JSONObject item = items_json.getJSONObject(i);
+			Long item_id = item.getLongValue("id");
+			int amount = item.getIntValue("amount");
+			double prince = item.getDoubleValue("price");
+			OrderItem orderItem = new OrderItem(order_num,item_id,amount,prince);
+			result.add(orderItem);
+		}
+		return result;
 	}
 
 

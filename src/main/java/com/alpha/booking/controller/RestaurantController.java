@@ -30,6 +30,12 @@ public class RestaurantController {
 		
 	}
 	
+	@RequestMapping("/detail")
+	public DataModel<Object> detail(@RequestParam(value = "restaurant_id",required = true)Long restaurant_id){
+		
+		return service.getDetail(restaurant_id);
+	}
+	
 	@RequestMapping("/items")
 	public DataModel<Object> getItems(
 			@RequestParam(value="restaurant_id",required=true)Long restaurant_id){

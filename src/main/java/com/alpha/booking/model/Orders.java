@@ -18,8 +18,18 @@ public class Orders {
     private Long restaurantId;
 
     private String tableNum;
+    
+    private String items;
 
-    public String getOrderNum() {
+    public String getItems() {
+		return items;
+	}
+
+	public void setItems(String items) {
+		this.items = items;
+	}
+
+	public String getOrderNum() {
         return orderNum;
     }
 
