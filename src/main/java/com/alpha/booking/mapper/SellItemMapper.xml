@@ -41,7 +41,7 @@
     discount, category, is_soldout
   </sql>
   
-  <select id="selectAllItemsByRestaurantId" parameterType="java.lang.String" resultMap="SellItemWithCategory">
+  <select id="selectAllItemsByRestaurantId" parameterType="java.lang.Long" resultMap="SellItemWithCategory">
 SELECT
 	category.id,
 	category.category_name,
@@ -72,8 +72,7 @@ AND sell_item.category = category.id
   
   
   <select id="selectAllItemsByRestaurantId0" parameterType="java.lang.Long" resultType="com.alpha.booking.model.SellItem">
-      select * from sell_item where restaurant_id = #{id}
-      
+      select * from sell_item where restaurant_id = #{id}    
   </select>
   
   

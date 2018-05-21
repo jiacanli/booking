@@ -60,6 +60,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		redis.watch(key);
 		//redis中的订单，理论上之前已经生成了最新的订单
 		String cart_str = redis.get(key);
+		// 
+		if(cart_str==null) {
+			return createOrder(restaurant_id, table_num);
+		}
 		ItemCart cart = JSONObject.parseObject(cart_str, ItemCart.class);
 		//需要判断该订单是不是已经提交了
 		if(cart.isFinished()||redis.exists(key_lock)) {

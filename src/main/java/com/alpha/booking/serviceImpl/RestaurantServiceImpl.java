@@ -11,6 +11,7 @@ import com.alpha.booking.dao.CategoryMapper;
 import com.alpha.booking.dao.RestaurantMapper;
 import com.alpha.booking.dao.SellItemMapper;
 import com.alpha.booking.model.Category;
+import com.alpha.booking.model.CategoryWithItem;
 import com.alpha.booking.model.Restaurant;
 import com.alpha.booking.model.SellItem;
 import com.alpha.booking.service.RestaurantService;
@@ -48,7 +49,7 @@ public class RestaurantServiceImpl extends BaseServiceImpl<Restaurant> implement
 		Example example = new Example(Restaurant.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("id", restaurant_id);
-		return ResultMapUtils.getResultMap(mapper.selectByExample(example));
+		return ResultMapUtils.getResultMap(mapper.selectByExample(example).get(0));
 		
 	}
 	
