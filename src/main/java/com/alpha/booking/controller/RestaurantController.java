@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alpha.booking.datasource.DataSource;
 import com.alpha.booking.service.DiscountService;
 import com.alpha.booking.service.RestaurantService;
 import com.alpha.common.web.DataModel;
@@ -31,6 +32,7 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping("/detail")
+	@DataSource(DataSourceName = "backup")
 	public DataModel<Object> detail(@RequestParam(value = "restaurant_id",required = true)Long restaurant_id){
 		
 		return service.getDetail(restaurant_id);
