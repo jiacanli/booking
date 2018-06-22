@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alpha.booking.model.Orders;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.ParamPreCheck;
-import com.alpha.common.connect.test;
 import com.alpha.common.web.DataModel;
+import com.alpha.common.web.PageModel;
 import com.alpha.common.web.ResultMapUtils;
+
 
 @RestController
 @RequestMapping("/order")
@@ -25,7 +26,11 @@ public class OrderController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	/*
+	 * 
+	 * 
+	 * 
+	 */
 	@RequestMapping("/additem")
 	public DataModel<Object> addItem(HttpServletRequest request){
 		if(!ParamPreCheck.checkNull(request,"restaurant_id","table_num"
@@ -65,6 +70,8 @@ public class OrderController {
 		return service.findByRestaurantIdAndTable(restaurant_id, table_num);
 		
 	}
+	
+	
 	
 	
 

@@ -54,12 +54,12 @@
 		<!-- 监控数据库 -->
 		<property name="filters" value="mergeStat" />
 	</bean>
-	
+	<!--  
 	<bean name="dataSource1" parent = "dataSource">
 	    <property name="url" value="${jdbc.backup_url}"/>	    
 	</bean>
-	
-	<bean id="MultiDataSourceManager" class="com.alpha.booking.datasource.MultiDataSourceManager">
+	-->
+	<!--  <bean id="MultiDataSourceManager" class="com.alpha.booking.datasource.MultiDataSourceManager">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="default" value-ref="dataSource"></entry>
@@ -68,15 +68,15 @@
         </property>
         <property name="defaultTargetDataSource" ref="dataSource"></property>
     </bean>
-	
+	-->
 	<!-- 事务管理 -->
 	<bean id="appTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-	  <property name="dataSource" ref="MultiDataSourceManager" />
+	  <property name="dataSource" ref="dataSource" />
 	</bean>
 	
 	<!-- myBatis文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="MultiDataSourceManager" />
+		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
 		<property name="mapperLocations" value="classpath*:com/alpha/booking/mapper/*.xml" />

@@ -8,7 +8,35 @@
     <result column="amount" jdbcType="INTEGER" property="amount" />
     <result column="price" jdbcType="DOUBLE" property="price" />
   </resultMap>
+  
+  
+  <resultMap id="ItemDetail" type="com.alpha.booking.model.OrderItem$OrderItemDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="orig_price" jdbcType="DOUBLE" property="orig_price" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+  </resultMap>
+  
   <sql id="Base_Column_List">
     id, order_num, item_id, amount, price
   </sql>
+  
+  <select id = "selectItemDetail" parameterType = "java.lang.String" resultMap = "ItemDetail">
+      SELECT
+ t1.id,
+ t1.name,
+ t2.amount,
+ t1.orig_price,
+ t2.price
+FROM
+ sell_item as t1,
+ order_item as t2
+WHERE
+ t2.order_num =#{order_num}
+AND
+ t2.item_id = t1.id
+      
+  </select>
+  
 </mapper>

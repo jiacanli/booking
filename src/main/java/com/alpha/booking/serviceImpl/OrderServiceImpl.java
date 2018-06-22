@@ -20,7 +20,11 @@ import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.OrderUtil;
 import com.alpha.booking.util.Redis;
 import com.alpha.common.web.DataModel;
+import com.alpha.common.web.PageModel;
 import com.alpha.common.web.ResultMapUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
@@ -33,6 +37,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 	
 	@Autowired
 	private OrderItemMapper orderItemMapper;
+	
+	@Autowired
+	private OrdersMapper ordersMapper;
 	
 	public OrderServiceImpl() {
 		// TODO Auto-generated constructor stub
@@ -193,6 +200,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		Jedis redis = Redis.getInstance();
 		String prefix = Redis.prefix.ORDER;
 		String key = restaurant_id+prefix+table_num;
+		//生成之前需要判断上个订单是否完成
 		if(redis.exists(key)) {
 			Date now = new Date();
 			ItemCart cart = JSONObject.parseObject(redis.get(key), ItemCart.class);
@@ -254,6 +262,31 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			result.add(orderItem);
 		}
 		return result;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.alpha.booking.service.OrderService#findByDetail(java.lang.String, int, int, java.lang.String, java.lang.String)
+	 */
+	public PageModel<Orders.SimpleFormatOrder> findByDetail(String restaurant_id, int page, int pagecount, String sdate, String edate) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page, pagecount);
+		Example example = new Example(Orders.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("restaurantId", restaurant_id);
+		criteria.andBetween("createTime", sdate, edate);
+		List<Orders> orders = ordersMapper.selectByExample(example);
+		List<Orders.SimpleFormatOrder> result = new ArrayList<Orders.SimpleFormatOrder>();
+		for(Orders item : orders) {
+			result.add(item.transfer());
+		}
+		
+		PageInfo<Orders.SimpleFormatOrder> pageInfo = new PageInfo<Orders.SimpleFormatOrder>(result);
+		PageModel<Orders.SimpleFormatOrder> pageModel = new PageModel<Orders.SimpleFormatOrder>();
+		pageModel.setRows(pageInfo.getList());
+		pageModel.setTotal((int)pageInfo.getTotal());
+		return pageModel;
 	}
 
 

@@ -2,6 +2,7 @@ package com.alpha.booking.service;
 
 import com.alpha.booking.model.Orders;
 import com.alpha.common.web.DataModel;
+import com.alpha.common.web.PageModel;
 
 public interface OrderService extends BaseService<Orders>{
 	DataModel<Object> additem(String restaurant_id,String table_num,String item_detail);
@@ -9,4 +10,5 @@ public interface OrderService extends BaseService<Orders>{
 	DataModel<Object> findByRestaurantId(String id);
 	DataModel<Object> createOrder(String restaurant_id,String table_num);
 	DataModel<Object> findByRestaurantIdAndTable(String id,String table_num);
+    PageModel<Orders.SimpleFormatOrder> findByDetail(String restaurant_id,int page,int pagecount,String sdate,String edate);
 }

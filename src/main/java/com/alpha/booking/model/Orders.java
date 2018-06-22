@@ -20,7 +20,13 @@ public class Orders {
     private String tableNum;
     
     private String items;
-
+    
+    
+    
+    public SimpleFormatOrder transfer() {
+    	return new SimpleFormatOrder(this.orderNum, this.tableNum,this,orderNum,createTime);
+    }
+    
     public String getItems() {
 		return items;
 	}
@@ -91,5 +97,68 @@ public class Orders {
 
     public void setTableNum(String tableNum) {
         this.tableNum = tableNum;
+    }
+    
+    
+    /*
+     * 
+     * 
+     * 
+     * @ClassName: SimpleFormatOrder 
+     * @Description: 返回数据格式
+     * @author: jiacanli
+     * @date: 2018年6月21日 下午2:26:19
+     */
+    public class SimpleFormatOrder{
+    	String guid;
+    	String name;
+    	String detail;
+    	Date time;
+    	Orders others;
+    	
+    	public SimpleFormatOrder(String name,String detail,Orders others,String guid,Date time) {
+    		this.name = name;
+    		this.detail = detail;
+    		this.others = others;
+    		this.guid = guid;
+    		this.time = time;
+    	}
+    	
+		public String getGuid() {
+			return guid;
+		}
+
+		public void setGuid(String guid) {
+			this.guid = guid;
+		}
+
+		public Date getTime() {
+			return time;
+		}
+
+		public void setTime(Date time) {
+			this.time = time;
+		}
+
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getDetail() {
+			return detail;
+		}
+		public void setDetail(String detail) {
+			this.detail = detail;
+		}
+		public Orders getOthers() {
+			return others;
+		}
+		public void setOthers(Orders others) {
+			this.others = others;
+		}
+    	
+    	
     }
 }
