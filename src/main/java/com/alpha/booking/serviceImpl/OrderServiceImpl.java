@@ -281,11 +281,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		for(Orders item : orders) {
 			result.add(item.transfer());
 		}
+		//
+		PageInfo<Orders> origin_page = new PageInfo<Orders>(orders);
 		
 		PageInfo<Orders.SimpleFormatOrder> pageInfo = new PageInfo<Orders.SimpleFormatOrder>(result);
 		PageModel<Orders.SimpleFormatOrder> pageModel = new PageModel<Orders.SimpleFormatOrder>();
 		pageModel.setRows(pageInfo.getList());
-		pageModel.setTotal((int)pageInfo.getTotal());
+		pageModel.setTotal((int)origin_page.getTotal());
 		return pageModel;
 	}
 
