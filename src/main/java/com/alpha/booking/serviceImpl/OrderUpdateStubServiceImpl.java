@@ -5,6 +5,8 @@
  */
 package com.alpha.booking.serviceImpl;
 
+import org.springframework.stereotype.Service;
+
 import com.alpha.booking.model.OrderUpdateStub;
 import com.alpha.booking.service.OrderUpdateStubService;
 
@@ -14,6 +16,7 @@ import com.alpha.booking.service.OrderUpdateStubService;
  * @author: jiacanli
  * @date: 2018年7月20日 下午3:15:27  
  */
+@Service
 public class OrderUpdateStubServiceImpl extends BaseServiceImpl<OrderUpdateStub> implements OrderUpdateStubService {
 
 	/**
