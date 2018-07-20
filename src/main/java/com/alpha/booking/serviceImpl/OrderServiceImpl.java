@@ -281,9 +281,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		for(Orders item : orders) {
 			result.add(item.transfer());
 		}
-		//
+		//根据查询数据总条数 计算出总页数
 		PageInfo<Orders> origin_page = new PageInfo<Orders>(orders);
-		
+		//查询结果总条数
+		int record_num = (int)origin_page.getTotal();
+		//总页数
+		int page_sum = record_num%pagecount == 0?record_num/pagecount:(record_num/pagecount)+1;
+		if(page>page_sum) {
+			return new PageModel<Orders.SimpleFormatOrder>();
+		}
 		PageInfo<Orders.SimpleFormatOrder> pageInfo = new PageInfo<Orders.SimpleFormatOrder>(result);
 		PageModel<Orders.SimpleFormatOrder> pageModel = new PageModel<Orders.SimpleFormatOrder>();
 		pageModel.setRows(pageInfo.getList());

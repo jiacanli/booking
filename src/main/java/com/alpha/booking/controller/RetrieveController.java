@@ -45,10 +45,10 @@ public class RetrieveController {
 	@RequestMapping("/findbydetail")
 	public DataModel<Object> findbydetail(
 			@RequestParam (value="Guid",required=true)String storeGuid,
-			@RequestParam (value="sDate",required=true) String sdate,
-			@RequestParam(value="eDate",required=true) String edate,
-			@RequestParam(value="page",required=true) int page,
-			@RequestParam(value="pageCount",required=true) int pagecount,
+			@RequestParam (value="sDate",required=false) String sdate,
+			@RequestParam(value="eDate",required=false) String edate,
+			@RequestParam(value="page",required=false) int page,
+			@RequestParam(value="pageCount",required=false) int pagecount,
 			@RequestParam(value="code",required = true)String code
 			){
 		if("check_order".equals(code)) {
@@ -63,5 +63,11 @@ public class RetrieveController {
 		}
 		
 	}
-
+	
+	
+	public static void main(String[] args) {
+		System.err.println(12%10);
+	}
+	
+	
 }

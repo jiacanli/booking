@@ -12,7 +12,7 @@
 			<property name="suppressAllComments" value="true"/>
 		</commentGenerator>
 		<!--数据库链接URL，用户名、密码 -->
-		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/booking?characterEncoding=utf8" userId="root" password="">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://59.110.175.2:3306/booking?characterEncoding=utf8" userId="root" password="ljcc">
 		</jdbcConnection>
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false"/>
@@ -36,7 +36,7 @@
 		
 		<table enableUpdateByExample ="false" enableCountByExample ="false" selectByExampleQueryId="false" enableSelectByExample="false"  enableDeleteByExample="false"
 			   enableInsert = "false" enableSelectByPrimaryKey = "true" enableUpdateByPrimaryKey ="false" enableDeleteByPrimaryKey ="false"
-			   tableName="category" domainObjectName="Category"></table>
+			   tableName="order_update_stub" domainObjectName="OrderUpdateStub"></table>
 
 
 

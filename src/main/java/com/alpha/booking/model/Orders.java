@@ -2,6 +2,8 @@ package com.alpha.booking.model;
 
 import java.util.Date;
 
+import com.alpha.booking.util.OrderUtil;
+
 public class Orders {
     private String orderNum;
 
@@ -24,7 +26,12 @@ public class Orders {
     
     
     public SimpleFormatOrder transfer() {
-    	return new SimpleFormatOrder(this.orderNum, this.tableNum,this,orderNum,createTime);
+    	String status_str = String.valueOf(this.orderStatus);
+    	String is_confirmed = status_str.substring(0, 2);
+    	String is_payed = status_str.substring(2, status_str.length());
+    	
+    	return new SimpleFormatOrder("订单号："+this.orderNum, "桌号："+this.tableNum,this,orderNum,createTime
+    		,OrderUtil.getStatusString(is_confirmed)+","+OrderUtil.getStatusString(is_payed)	);
     }
     
     public String getItems() {
@@ -115,15 +122,28 @@ public class Orders {
     	String detail;
     	Date time;
     	Orders others;
+    	String status;
     	
-    	public SimpleFormatOrder(String name,String detail,Orders others,String guid,Date time) {
+    	public SimpleFormatOrder(String name,String detail,Orders others,String guid,Date time,String status) {
     		this.name = name;
     		this.detail = detail;
     		this.others = others;
     		this.guid = guid;
     		this.time = time;
+    		this.status = status;
     	}
     	
+    	
+		public String getStatus() {
+			return status;
+		}
+
+
+		public void setStatus(String status) {
+			this.status = status;
+		}
+
+
 		public String getGuid() {
 			return guid;
 		}
