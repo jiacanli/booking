@@ -255,4 +255,9 @@
 	
 	</dependencies>
 	
+	
+	<build>
+	<finalName>booking</finalName>
+	</build>
+	
 </project>

@@ -15,7 +15,7 @@ import com.alpha.booking.model.OrderUpdateStub;
  * @author: jiacanli
  * @date: 2018年7月20日 下午3:14:49  
  */
-@Service
+
 public interface OrderUpdateStubService extends BaseService<OrderUpdateStub> {
 
 }

@@ -31,11 +31,6 @@ import com.alpha.common.web.ResultMapUtils;
 public class OrderItemController {
 	
 	
-	@Autowired
-	private OrderItemService orderItemService;
-	
-	@Autowired
-	private OrderUpdateStubService orderUpdateStubService;
 	/**
 	 * 
 	 */
@@ -44,21 +39,6 @@ public class OrderItemController {
 	}
 	
 	
-	@RequestMapping("/update")
-	public DataModel<Object> update(
-			@RequestParam(value = "new_item",required= true) List<OrderItem> items,
-			@RequestParam(value = "old_item",required = true) List<OrderUpdateStub> olds
-			){
-		
-		for(OrderItem item :items) {
-			int update_result = orderItemService.updateByprimaryKeySelective(item);
-			if(update_result==0) {
-				orderItemService.deleteByPrimaryKey(item.getId());
-				return ResultMapUtils.failUpdating();
-			}
-		}
-		orderUpdateStubService.insertList(olds);
-		return ResultMapUtils.getResultMap();
-	}
+
 	
 }

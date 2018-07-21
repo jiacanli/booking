@@ -47,8 +47,8 @@ public class RetrieveController {
 			@RequestParam (value="Guid",required=true)String storeGuid,
 			@RequestParam (value="sDate",required=false) String sdate,
 			@RequestParam(value="eDate",required=false) String edate,
-			@RequestParam(value="page",required=false) int page,
-			@RequestParam(value="pageCount",required=false) int pagecount,
+			@RequestParam(value="page",required=false) Integer page,
+			@RequestParam(value="pageCount",required=false) Integer pagecount,
 			@RequestParam(value="code",required = true)String code
 			){
 		if("check_order".equals(code)) {
