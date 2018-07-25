@@ -26,6 +26,10 @@ public class Orders {
     
     
     public SimpleFormatOrder transfer() {
+    	if(this.orderStatus == 0) {
+    		return new SimpleFormatOrder("订单号："+this.orderNum, "桌号："+this.tableNum,this,orderNum,createTime
+    	    		,"订单作废");
+    	}
     	String status_str = String.valueOf(this.orderStatus);
     	String is_confirmed = status_str.substring(0, 2);
     	String is_payed = status_str.substring(2, status_str.length());

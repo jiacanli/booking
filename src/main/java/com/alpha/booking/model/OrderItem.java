@@ -1,7 +1,7 @@
 package com.alpha.booking.model;
 
 public class OrderItem {
-    private Integer id;
+    private Long id;
 
     private String orderNum;
 
@@ -21,11 +21,11 @@ public class OrderItem {
     }
     
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,19 +77,39 @@ public class OrderItem {
     	double orig_price;
     	int amount;
     	double price;
+    	Long item_id;
     	
-    	public OrderItemDetail() {
+    	public Long getItem_id() {
+			return item_id;
+		}
+
+		public void setItem_id(Long item_id) {
+			this.item_id = item_id;
+		}
+
+		public OrderItemDetail() {
     		
     	}
     	
-    	public OrderItemDetail(long id,String name,int amount,double orig_price,double price) {
+    	public OrderItemDetail(long id,String name,int amount,double orig_price,double price,Long item_id) {
     		this.id = id;
     		this.name = name;
     		this.orig_price = orig_price;
     		this.amount = amount;
     		this.price = price;
+    		this.item_id = item_id;
     	}
     	
+    	
+    	
+    	public OrderItem transfer() {
+    		OrderItem item = new OrderItem();
+    		item.setAmount(this.amount);
+    		item.setId(this.id);
+    		item.setItemId(this.item_id);
+    		item.setPrice(this.price);
+    		return item;
+    	}
 		public long getId() {
 			return id;
 		}

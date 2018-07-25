@@ -1,5 +1,6 @@
 package com.alpha.booking.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.OrderUpdateStub;
 import com.alpha.booking.model.Orders;
@@ -98,19 +101,31 @@ public class OrderController {
 	
 	@RequestMapping("/update_items")
 	public DataModel<Object> update(
-			@RequestParam(value = "new_item",required= true) List<OrderItem> items,
-			@RequestParam(value = "old_item",required = true) List<OrderUpdateStub> olds
+			@RequestParam(value = "new_item",required= true) String items,
+			@RequestParam(value = "old_item",required = true) String olds,
+			@RequestParam(value = "order_num",required = true) String order_num
 			){
-		
-		for(OrderItem item :items) {
-			int update_result = orderItemService.updateByprimaryKeySelective(item);
-			if(update_result==0) {
-				orderItemService.deleteByPrimaryKey(item.getId());
-				return ResultMapUtils.failUpdating();
-			}
+		try {
+
+		List<OrderItem.OrderItemDetail> new_item = JSONObject.parseArray(items, OrderItem.OrderItemDetail.class);
+		List<OrderUpdateStub> update_stub = JSONObject.parseArray(olds, OrderUpdateStub.class);
+		for(OrderItem.OrderItemDetail item : new_item) {		
+			Example example = new Example(OrderItem.class);
+			Criteria criteria = example.createCriteria();
+			criteria.andEqualTo("id", item.getId());
+			int result = orderItemService.updateByExampleSelective(item.transfer(), example);
 		}
-		orderUpdateStubService.insertList(olds);
-		return ResultMapUtils.getResultMap();
+		for(OrderUpdateStub stub:update_stub) {
+			stub.setOpttime(new Date());
+			stub.setOrderNum(order_num);
+		}
+		orderUpdateStubService.insertList(update_stub);
+		return ResultMapUtils.getResultMap();}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ResultMapUtils.failUpdating();
+		}
 	}
 	
 	

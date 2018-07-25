@@ -5,19 +5,11 @@
  */
 package com.alpha.booking.controller;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONReader;
 import com.alpha.booking.dao.SellItemMapper;
-import com.alpha.booking.model.SellItem;
 
 /** 
  * @ClassName: SellItemController 
@@ -29,8 +21,6 @@ import com.alpha.booking.model.SellItem;
 @RestController
 @RequestMapping("/sellitem")
 public class SellItemController {
-	@Autowired
-	private SellItemMapper mapper;
 	/**
 	 * 
 	 */
