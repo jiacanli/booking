@@ -330,11 +330,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		* @date 2018年7月31日下午5:31:27
 		*/ 
 		@Override
-		public List<OrderStaticByHour> OrderStatisticsByHour(String date) {
+		public List<OrderStaticByHour> OrderStatisticsByHour(String date,long id) {
 			// TODO Auto-generated method stub
 			String start = date+" "+"00:00:00";
 			String end  = date +" "+"23:59:59";
-			return ordersMapper.OrderStatisticsByHour(start, end);
+			return ordersMapper.OrderStatisticsByHour(start, end,id);
 		} 
 
 

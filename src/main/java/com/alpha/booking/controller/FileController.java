@@ -6,7 +6,6 @@
 package com.alpha.booking.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alpha.common.fileAssist.PropertyFileLoader;
+import com.alpha.common.file.PropertyFileLoader;
 import com.alpha.common.web.DataModel;
 import com.alpha.common.web.ResultMapUtils;
 

@@ -29,7 +29,7 @@
 FROM
 	orders
 WHERE
-	orders.restaurant_id = '1'
+	orders.restaurant_id = #{id}
 AND
 	 orders.create_time BETWEEN #{start} AND #{end}
 GROUP BY

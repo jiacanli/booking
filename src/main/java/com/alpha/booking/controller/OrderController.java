@@ -134,10 +134,11 @@ public class OrderController {
 	@RequestMapping("/ordersbyhour")
 	public DataModel<Object> orderByhour(
 			@RequestParam(value = "date",required = true) String date,
-			@RequestParam(value = "token",required = true)String token
+			@RequestParam(value = "token",required = true)String token,
+			@RequestParam(value = "r_id",required = true)Long id
 			){
 		if(AuthenticateUtil.checkPermission(token)) {
-			List<OrderStaticByHour> result = service.OrderStatisticsByHour(date);
+			List<OrderStaticByHour> result = service.OrderStatisticsByHour(date,id);
 			return ResultMapUtils.getResultMap(result);
 		}
 		
