@@ -15,10 +15,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.OrderUpdateStub;
 import com.alpha.booking.model.Orders;
+import com.alpha.booking.result.model.OrderStaticByHour;
 import com.alpha.booking.service.OrderItemService;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.service.OrderUpdateStubService;
+import com.alpha.booking.util.AuthenticateUtil;
 import com.alpha.booking.util.ParamPreCheck;
+import com.alpha.booking.util.test;
 import com.alpha.common.web.DataModel;
 import com.alpha.common.web.PageModel;
 import com.alpha.common.web.ResultMapUtils;
@@ -127,6 +130,21 @@ public class OrderController {
 			return ResultMapUtils.failUpdating();
 		}
 	}
+	
+	@RequestMapping("/ordersbyhour")
+	public DataModel<Object> orderByhour(
+			@RequestParam(value = "date",required = true) String date,
+			@RequestParam(value = "token",required = true)String token
+			){
+		if(AuthenticateUtil.checkPermission(token)) {
+			List<OrderStaticByHour> result = service.OrderStatisticsByHour(date);
+			return ResultMapUtils.getResultMap(result);
+		}
+		
+		return ResultMapUtils.getFailResultMap("400", "授权失败");
+		
+	}
+	
 	
 	
 	

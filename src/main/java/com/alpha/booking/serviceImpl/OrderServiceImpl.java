@@ -19,13 +19,13 @@ import com.alpha.booking.dao.OrdersMapper;
 import com.alpha.booking.model.ItemCart;
 import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.Orders;
+import com.alpha.booking.result.model.OrderStaticByHour;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.OrderUtil;
 import com.alpha.booking.util.Redis;
 import com.alpha.common.web.DataModel;
 import com.alpha.common.web.PageModel;
 import com.alpha.common.web.ResultMapUtils;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -319,6 +319,22 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 				return null;
 			}
 			
+		}
+
+
+
+		/** 
+		* @Title: OrderStatisticsByHour 
+		* @Description: TODO 
+		* @author gdkj
+		* @date 2018年7月31日下午5:31:27
+		*/ 
+		@Override
+		public List<OrderStaticByHour> OrderStatisticsByHour(String date) {
+			// TODO Auto-generated method stub
+			String start = date+" "+"00:00:00";
+			String end  = date +" "+"23:59:59";
+			return ordersMapper.OrderStatisticsByHour(start, end);
 		} 
 
 
