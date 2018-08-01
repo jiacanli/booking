@@ -20,6 +20,7 @@ import com.alpha.booking.model.ItemCart;
 import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.Orders;
 import com.alpha.booking.result.model.OrderStaticByHour;
+import com.alpha.booking.result.model.OrderStaticsDetailDaily;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.util.OrderUtil;
 import com.alpha.booking.util.Redis;
@@ -335,6 +336,40 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			String start = date+" "+"00:00:00";
 			String end  = date +" "+"23:59:59";
 			return ordersMapper.OrderStatisticsByHour(start, end,id);
+		}
+
+
+
+		/** 
+		* @Title: OrderStatisticsDetail 
+		* @Description: TODO 
+		* @author gdkj
+		* @date 2018年8月1日下午2:22:24
+		*/ 
+		@Override
+		public OrderStaticsDetailDaily OrderStatisticsDetail(String date, long id) {
+			// TODO Auto-generated method stub
+			OrderStaticsDetailDaily detail = new OrderStaticsDetailDaily();
+			String start = date+" "+"00:00:00";
+			String end  = date +" "+"23:59:59";
+			List<Orders> result = ordersMapper.OrderStatisticsDetail(start, end, id);
+			detail.setOrder_total(result.size());
+			for(Orders item : result) {
+				String status = item.getOrderStatus()+"";
+				if(status.equals("0")) {
+					detail.cancelIncrese();
+				}
+				else if(status.startsWith("10"))
+				{
+					detail.confirmIncrese();
+				}
+				else if(status.endsWith("30")){
+					 detail.payIncrese();
+				}
+			}
+			
+			
+			return detail;
 		} 
 
 

@@ -5,17 +5,23 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.model.OrderItem;
 import com.alpha.booking.model.OrderUpdateStub;
 import com.alpha.booking.model.Orders;
 import com.alpha.booking.result.model.OrderStaticByHour;
+import com.alpha.booking.result.model.OrderStaticsDetailDaily;
 import com.alpha.booking.service.OrderItemService;
 import com.alpha.booking.service.OrderService;
 import com.alpha.booking.service.OrderUpdateStubService;
@@ -34,6 +40,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 	
 	@Autowired
 	private OrderService service;
@@ -133,17 +140,48 @@ public class OrderController {
 	
 	@RequestMapping("/ordersbyhour")
 	public DataModel<Object> orderByhour(
-			@RequestParam(value = "date",required = true) String date,
-			@RequestParam(value = "token",required = true)String token,
-			@RequestParam(value = "r_id",required = true)Long id
+			@RequestParam(value = "value",required = true) String params
 			){
-		if(AuthenticateUtil.checkPermission(token)) {
+		
+		try {
+			String text = AuthenticateUtil.decrypt(params);
+			log.debug(String.format("明文 ------> %s", text));
+			JSONObject param_json = JSONObject.parseObject(text);
+			String date = param_json.getString("date");
+			Long id = param_json.getLong("id");
 			List<OrderStaticByHour> result = service.OrderStatisticsByHour(date,id);
-			return ResultMapUtils.getResultMap(result);
+			String result_str = JSON.toJSONString(result);
+			String plain_result = AuthenticateUtil.AESencrypt(result_str);
+			return ResultMapUtils.getResultMap(plain_result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResultMapUtils.getFailResultMap("400", "授权失败");
 		}
+//		
 		
-		return ResultMapUtils.getFailResultMap("400", "授权失败");
 		
+	}
+	
+	// 当天确认订单数，付款订单，取消订单
+	@RequestMapping("/orderstatics")
+	public DataModel<Object> getOrdersStatics(@RequestParam(value = "value",required = true) String params){
+		try {
+			String text = AuthenticateUtil.decrypt(params);
+			log.debug(String.format("明文 ------> %s", text));
+			JSONObject param_json = JSONObject.parseObject(text);
+			String date = param_json.getString("date");
+			Long id = param_json.getLong("id");
+			OrderStaticsDetailDaily result = service.OrderStatisticsDetail(date, id);
+			String result_str = JSON.toJSONString(result);
+			String plain_result = AuthenticateUtil.AESencrypt(result_str);
+			return ResultMapUtils.getResultMap(plain_result);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResultMapUtils.getFailResultMap("400", "参数错误");
+		}
 	}
 	
 	

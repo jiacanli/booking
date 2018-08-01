@@ -35,4 +35,19 @@ AND
 GROUP BY
 	hour    
   </select>
+  
+  <select id="OrderStatisticsDetail" resultType = "com.alpha.booking.model.Orders">
+  	SELECT
+	*
+FROM
+	orders
+WHERE
+	orders.create_time
+BETWEEN
+	#{start}
+AND
+	#{end}
+AND
+	orders.restaurant_id = #{id}
+  </select>
 </mapper>
