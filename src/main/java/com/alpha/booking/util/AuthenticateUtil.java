@@ -73,7 +73,9 @@ public class AuthenticateUtil {
             KeyGenerator keygen=KeyGenerator.getInstance("AES");
             //2.根据ecnodeRules规则初始化密钥生成器
             //生成一个128位的随机源,根据传入的字节数组
-            keygen.init(128, new SecureRandom(key_str.getBytes()));
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG" );
+            secureRandom.setSeed(key_str.getBytes());
+            keygen.init(128, secureRandom);
               //3.产生原始对称密钥
             SecretKey original_key=keygen.generateKey();
               //4.获得原始对称密钥的字节数组
@@ -168,12 +170,10 @@ public class AuthenticateUtil {
 	
 	public static void main(String[] args) {
 		try {
-//			Cipher cipher = Cipher.getInstance("RSA");
-//			cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(PUBLIC_KEY_BASE64));
-//			byte[] plain = cipher.doFinal("12345".getBytes());
-//			System.out.println((new BASE64Encoder()).encode(plain));
-			System.out.println(AESencrypt("fahhhhhh"));
-			System.out.println("hangge.com123456".getBytes().length);
+			String base  = "cDqftW3LdptW9gwmR+RoAlB5nmw5mRTLI4+QDq0NZKWvnmwyJCzXsRVPiFt7m46DbjpnMMunCUA4\nEppjpfXKg79/geP2/LNB4qsj51HqB5I=";
+//			System.out.println(AESencrypt("1235566666"));
+			System.out.println(AESdecrypt(base));
+//			System.out.println("hangge.com123456".getBytes().length);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
