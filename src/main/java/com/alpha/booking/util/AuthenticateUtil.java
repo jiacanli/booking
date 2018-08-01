@@ -78,7 +78,8 @@ public class AuthenticateUtil {
             SecretKey original_key=keygen.generateKey();
               //4.获得原始对称密钥的字节数组
             byte [] raw=original_key.getEncoded();
-            System.err.println((new BASE64Encoder()).encode(raw));
+//            System.err.println(raw.length);
+//            System.err.println((new BASE64Encoder()).encode(raw));
             //5.根据字节数组生成AES密钥
             SecretKey key=new SecretKeySpec(raw, "AES");
 
@@ -171,8 +172,8 @@ public class AuthenticateUtil {
 //			cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(PUBLIC_KEY_BASE64));
 //			byte[] plain = cipher.doFinal("12345".getBytes());
 //			System.out.println((new BASE64Encoder()).encode(plain));
-			System.out.println(AESencrypt("ljcc"));
-			
+			System.out.println(AESencrypt("fahhhhhh"));
+			System.out.println("hangge.com123456".getBytes().length);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
