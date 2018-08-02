@@ -76,4 +76,34 @@ AND sell_item.category = category.id
   </select>
   
   
+   <select id="sellItemStatistics" resultType = "com.alpha.booking.result.model.SellItemStatistics">
+SELECT
+	DATE_FORMAT(orders.create_time,'%Y-%m-%d') as day,
+	order_item.item_id,
+	count(order_item.amount) as total
+FROM
+	orders,
+	order_item
+WHERE
+	orders.create_time
+BETWEEN
+	#{start}
+AND
+	#{end}
+AND
+	orders.restaurant_id = #{id}
+AND
+	orders.order_num = order_item.order_num
+AND
+	order_item.item_id
+in
+	<foreach collection="item_id" index = "index" item = "item" open="(" separator="," close=")">
+	#{item}
+	</foreach>
+GROUP BY
+	day,order_item.item_id
+  
+  </select>
+  
+  
 </mapper>

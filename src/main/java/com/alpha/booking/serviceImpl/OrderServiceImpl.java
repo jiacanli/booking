@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -141,7 +142,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 
 
 
-
+	 // 提交订单
 	public DataModel<Object> insertOrder(Orders order) {
 		// TODO Auto-generated method stub
 		
@@ -168,7 +169,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 			redis.close();
 			//开始插入订单明细item
 			List<OrderItem> items = parseItems(order.getItems(), order.getOrderNum());
-			int order_item_result = orderItemMapper.insertList(items);						
+			int order_item_result = orderItemMapper.insertList(items);
+			//增加菜品销量到redis
+			countSellItemNum(items);
 			return ResultMapUtils.getResultMap("插入操作成功", "");
 
 			
@@ -178,7 +181,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 	}
 
 
-
+	private void countSellItemNum(List<OrderItem> items) {
+		for(OrderItem item : items) {
+			Long id  = item.getItemId();
+			Redis.incre(Redis.prefix.SELL_ITEM_NUM+id, item.getAmount());
+		}
+	}
 
 	public DataModel<Object> findByRestaurantId(String id) {
 		// TODO Auto-generated method stub

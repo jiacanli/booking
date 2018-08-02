@@ -11,6 +11,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -95,15 +96,15 @@ public class AuthenticateUtil {
 	}
 	
 	public static String decrypt(String plain_text) throws Exception {
-		byte[] plain = (new BASE64Decoder()).decodeBuffer(plain_text);
-		Cipher cipher = Cipher.getInstance("RSA");
-		cipher.init(Cipher.DECRYPT_MODE, PRIVATE_KEY);
-		byte[] clear = cipher.doFinal(plain);
-		return new String(clear);
+//		byte[] plain = (new BASE64Decoder()).decodeBuffer(plain_text);
+//		Cipher cipher = Cipher.getInstance("RSA");
+//		cipher.init(Cipher.DECRYPT_MODE, PRIVATE_KEY);
+//		byte[] clear = cipher.doFinal(plain);
+		return AESdecrypt(plain_text);
 	}
 	
 	public static String AESdecrypt(String plain_text) throws Exception {
-		byte[] plain = (new BASE64Decoder()).decodeBuffer(plain_text);
+		byte[] plain =java8base64decode(plain_text);
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, AES_KEY);
 		byte[] clear = cipher.doFinal(plain);
@@ -112,28 +113,11 @@ public class AuthenticateUtil {
 	
 
 	
-//	public static String encrypt(String clear_text) throws Exception {
-//		byte[] clear = (new BASE64Decoder()).decodeBuffer(clear_text);
-//		Cipher cipher = Cipher.getInstance("RSA");
-//		cipher.init(Cipher.ENCRYPT_MODE, PUBLIC_KEY);
-//		byte[] plain = cipher.doFinal(clear_text.getBytes("UTF-8"));
-//		return (new BASE64Encoder()).encode(plain);
-//	}
-	
 	public static String AESencrypt(String clear_text) throws Exception {
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, AES_KEY);
 		byte[] plain = cipher.doFinal(clear_text.getBytes("UTF-8"));
-		return (new BASE64Encoder()).encode(plain);
-	}
-	
-	
-	
-	
-	
-	
-	private static boolean verifyText(byte[] clear_text) {
-		return (new String(clear_text)).length() == CHAR_LENGTH;
+		return java8base64encode(plain);
 	}
 	
 	public static PrivateKey getPrivateKey(String key){
@@ -168,12 +152,31 @@ public class AuthenticateUtil {
 	}
 	
 	
+	public static String java8base64encode(byte[] bytes) {
+		final Base64.Encoder encoder = Base64.getEncoder();
+		String encoded = encoder.encodeToString(bytes);
+		return encoded;
+	}
+	
+	public static byte[] java8base64decode(String text) {
+		final Base64.Decoder decoder = Base64.getDecoder();
+		return decoder.decode(text);
+	}
+	
+	
 	public static void main(String[] args) {
 		try {
-			String base  = "cDqftW3LdptW9gwmR+RoAlB5nmw5mRTLI4+QDq0NZKWvnmwyJCzXsRVPiFt7m46DbjpnMMunCUA4\nEppjpfXKg79/geP2/LNB4qsj51HqB5I=";
-//			System.out.println(AESencrypt("1235566666"));
-			System.out.println(AESdecrypt(base));
+			String base  = "QCMDgYyFF04M6jeADnZmYI98Mtnwt92BEY02cjYd7ChrjWBS1/vZsrE/UIX7aKJqYaj1SKN/rnUnk77smEYmiSRPFMk7Avpq0+pWeLtemFreu57PDZlCYU7pzWXoW4F9bbMu+/hPTbjD9Aqo2TxznxysOeTLRKarVW5rYIbX1gU=";
+			
+			String window ="+o1wlN8GnA/dpfxlZ5v0OxqlJ5S2TwZBGuZ19DthC3Lu1QvKHISPzDv5Cm88wlBOR9iC3iFg4QnU\r\n" + 
+					"KW9IUfr6mA==";
+			System.out.println(decrypt(window));
+//			System.out.println(AESdecrypt(base));
 //			System.out.println("hangge.com123456".getBytes().length);
+			
+//			System.out.println(window.equals(base) );
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

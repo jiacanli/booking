@@ -25,8 +25,12 @@ public class Redis {
 	public static final class prefix{
 		public static final String ORDER = "order";
 		public static final String ITEM = "item";
+		//
 		public static final String PAY_LOCK = "pay-lock";
+		//创建新订单锁
 		public static final String NEW_ORDER_LOCK = "new-order-lock";
+		// 销量统计 
+		public static final String SELL_ITEM_NUM = "sell_item_num-";
 		
 	}
 	
@@ -71,6 +75,18 @@ public class Redis {
 	        }
 	        
 		return false;
+	}
+	
+	public static void incre(String key,int count) {
+		Jedis redis = POOL.getResource();
+		if(!redis.exists(key)) {
+			redis.set(key,"0");
+		}
+		for(int i = 0; i <count ;i++) {
+			redis.incr(key);
+		}
+		
+		redis.close();
 	}
 	
 
