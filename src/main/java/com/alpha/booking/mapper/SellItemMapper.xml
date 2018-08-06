@@ -77,9 +77,9 @@ AND sell_item.category = category.id
   
   
    <select id="sellItemStatistics" resultType = "com.alpha.booking.result.model.SellItemStatistics">
-SELECT
+	SELECT
 	DATE_FORMAT(orders.create_time,'%Y-%m-%d') as day,
-	order_item.item_id,
+	order_item.item_id as item_id,
 	count(order_item.amount) as total
 FROM
 	orders,
@@ -104,6 +104,36 @@ GROUP BY
 	day,order_item.item_id
   
   </select>
+  
+<select id="turnOverByTime" resultType = "com.alpha.booking.result.model.TurnOver">
+SELECT
+	<choose>
+	<when test = "type == 'day'">
+	DATE_FORMAT(orders.create_time,'%d') as time,
+	</when>
+	<when test="type == 'month'">
+	DATE_FORMAT(orders.create_time,'%Y-%m-%d') as time,
+	</when>
+	<when test ="type == 'year'">
+	DATE_FORMAT(orders.create_time,'%Y') as time,
+	</when>	
+	<otherwise>
+	</otherwise>
+	</choose>
+	sum(orders.total) as total
+FROM
+	orders
+WHERE
+	orders.restaurant_id = #{id}
+AND
+	orders.create_time
+BETWEEN
+	#{start}
+AND
+	#{end}
+GROUP BY
+	time
+</select>
   
   
 </mapper>

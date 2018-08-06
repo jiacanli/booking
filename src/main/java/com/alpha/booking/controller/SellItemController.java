@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.dao.SellItemMapper;
 import com.alpha.booking.result.model.SellItemStatistics;
+import com.alpha.booking.result.model.TurnOver;
 import com.alpha.booking.service.SellItemService;
 import com.alpha.booking.util.AuthenticateUtil;
 import com.alpha.common.web.DataModel;
@@ -32,7 +33,7 @@ import com.alpha.common.web.ResultMapUtils;
  */
 
 @RestController
-@RequestMapping("/sellitem")
+@RequestMapping("")
 public class SellItemController {
 	/**
 	 * 
@@ -46,7 +47,7 @@ public class SellItemController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping("/statistics")
+	@RequestMapping("/sellitem/statistics")
 	public DataModel<Object> sellItemStatistics(@RequestParam(value ="value",required = true) String value){
 		try {
 			String plain_params = AuthenticateUtil.decrypt(value);
@@ -55,9 +56,10 @@ public class SellItemController {
 			String start = param_json.getString("start");
 			String end = param_json.getString("end");
 			Long id = param_json.getLong("id");
-			List<Integer> sell_items = 	JSONObject.parseArray(param_json.getJSONArray("item_id").toJSONString(), Integer.class);
+			List<Long> sell_items = JSONObject.parseArray(param_json.getJSONArray("item_id").toJSONString(), Long.class);
 			List<SellItemStatistics> result = sellItemService.sellItemStatistics(start, end, id, sell_items);
 			String result_str = JSON.toJSONString(result);
+			log.debug(String.format("clear result ： %s",result_str ));
 			String plain_result = AuthenticateUtil.AESencrypt(result_str);
 			return ResultMapUtils.getResultMap(plain_result);
 //			return ResultMapUtils.getResultMap(result);
@@ -67,44 +69,29 @@ public class SellItemController {
 			return ResultMapUtils.getFailResultMap("400", "授权失败");
 		}
 	}
-//	@RequestMapping("/init")
-//	public void init() {
-//		JSONReader reader;
-//		int count = 0;
-//		int start_category = 2;
-//		List<SellItem> records = new ArrayList<SellItem>();
-//		try {
-//			reader = new JSONReader(new FileReader("d:\\wx\\items.json"));
-//			reader.startArray();
-//			while(reader.hasNext()&&start_category<9) {
-//				JSONObject object = (JSONObject) reader.readObject();
-//				SellItem item = new SellItem();				
-//				item.setDescription(object.getString("description"));
-//				item.setDiscount(0);
-//				item.setImage(object.getString("image"));
-//				item.setName(object.getString("name"));
-//				item.setIsSoldout(0);
-//				item.setPrice(object.getDouble("price"));
-//				item.setOrigPrice(object.getDouble("price"));
-//				item.setOrderNum(object.getInteger("sold"));
-//				item.setUnit(object.getString("unit"));
-//				item.setRestaurantId(1L);
-//				records.add(item);
-//				item.setCategory(start_category);
-//				count++;
-//				if(count%5==0)
-//					start_category++;
-//			}
-//			
-//			mapper.insertList(records);
-//			
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//	}
+	
+	@RequestMapping("/salesbytime")
+	public DataModel<Object> salesbytime(@RequestParam(value="value",required = true)String value){
+		try {
+			String plain_params = AuthenticateUtil.decrypt(value);
+			log.debug(String.format("明文 ------> %s", plain_params));
+			JSONObject param_json = JSONObject.parseObject(plain_params);
+			String start = param_json.getString("time");
+			Long id = param_json.getLong("id");
+			List<TurnOver> result =  sellItemService.turnOverByTime(id, start, null, null);
+			String result_str = JSON.toJSONString(result);
+			log.debug(String.format("claear result : %s", result_str));
+			String plain_result = AuthenticateUtil.AESencrypt(result_str);
+			return ResultMapUtils.getResultMap(plain_result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResultMapUtils.getFailResultMap("400", "授权失败");
+		}
+		
+	}
+	
+
 	
 
 }

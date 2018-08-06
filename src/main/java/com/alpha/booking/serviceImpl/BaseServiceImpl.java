@@ -1,5 +1,9 @@
 package com.alpha.booking.serviceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -87,5 +91,27 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 		
 		
 	}
+	
+	
+	//6  day 加减    2 month 加减  
+	protected String getDate(String input,int type,int num) {
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date date = sf.parse(input);
+	        Calendar rightNow = Calendar.getInstance();
+	        rightNow.setTime(date);
+	        rightNow.add(type,num);
+	        Date dt1=rightNow.getTime();
+	        String reStr = sf.format(dt1);
+	        return reStr;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
 	
 }

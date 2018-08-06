@@ -284,7 +284,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 	public PageModel<Orders.SimpleFormatOrder> findByDetail(String restaurant_id, int page, int pagecount, String sdate, String edate) {
 		// TODO Auto-generated method stub
 		if(sdate.equals(edate)) {
-			edate = getDate(edate);
+			edate = getDate(edate,Calendar.DAY_OF_MONTH,1);
 		}
 		PageHelper.startPage(page, pagecount);
 		Example example = new Example(Orders.class);
@@ -312,23 +312,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		return pageModel;
 	}
 	 
-		private String getDate(String input) {
-			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				Date date = sf.parse(input);
-		        Calendar rightNow = Calendar.getInstance();
-		        rightNow.setTime(date);
-		        rightNow.add(Calendar.DAY_OF_YEAR,1);
-		        Date dt1=rightNow.getTime();
-		        String reStr = sf.format(dt1);
-		        return reStr;
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-			
-		}
+
 
 
 

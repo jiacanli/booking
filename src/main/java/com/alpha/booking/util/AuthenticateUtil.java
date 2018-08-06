@@ -170,7 +170,7 @@ public class AuthenticateUtil {
 			
 			String window ="+o1wlN8GnA/dpfxlZ5v0OxqlJ5S2TwZBGuZ19DthC3Lu1QvKHISPzDv5Cm88wlBOR9iC3iFg4QnU\r\n" + 
 					"KW9IUfr6mA==";
-			System.out.println(decrypt(window));
+			System.out.println(AESencrypt("{\"id\":1,\"time\":\"2018-07-21\"}"));
 //			System.out.println(AESdecrypt(base));
 //			System.out.println("hangge.com123456".getBytes().length);
 			

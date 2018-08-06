@@ -14,7 +14,20 @@ package com.alpha.booking.result.model;
 public class SellItemStatistics {
 	
 	private String day;
-	private long item_id;
+	private long itemId;
+	public long getItemId() {
+		return itemId;
+	}
+
+
+
+	public void setItemId(long itemId) {
+		this.itemId = itemId;
+	}
+
+
+
+
 	private int total;
 	
 	
@@ -29,17 +42,7 @@ public class SellItemStatistics {
 		this.day = day;
 	}
 
-
-
-	public long getItem_id() {
-		return item_id;
-	}
-
-
-
-	public void setItem_id(long item_id) {
-		this.item_id = item_id;
-	}
+	
 
 
 
@@ -52,6 +55,7 @@ public class SellItemStatistics {
 	public void setTotal(int total) {
 		this.total = total;
 	}
+
 
 
 
