@@ -18,12 +18,16 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alpha.booking.dao.SellItemMapper;
+import com.alpha.booking.model.SellItem;
 import com.alpha.booking.result.model.SellItemStatistics;
 import com.alpha.booking.result.model.TurnOver;
 import com.alpha.booking.service.SellItemService;
 import com.alpha.booking.util.AuthenticateUtil;
 import com.alpha.common.web.DataModel;
 import com.alpha.common.web.ResultMapUtils;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /** 
  * @ClassName: SellItemController 
@@ -90,6 +94,31 @@ public class SellItemController {
 		}
 		
 	}
+	
+	
+	
+	@RequestMapping("/sellitem/add")
+	public DataModel<Object> add(SellItem entity){
+		int result = sellItemService.insert(entity);
+		return  result == 0 ? ResultMapUtils.failInserting():ResultMapUtils.getResultMap();
+	}
+	
+	@RequestMapping("/sellitem/delete")
+	public DataModel<Object> delete(Long id){
+		int result = sellItemService.deleteByPrimaryKey(id);
+		return result == 0 ? ResultMapUtils.failDeleting():ResultMapUtils.getResultMap();
+	}
+	
+	@RequestMapping("/sellitem/update")
+	public DataModel<Object> update(SellItem entity){
+		Example example = new Example(SellItem.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("id", entity.getId());
+		int result = sellItemService.updateByExample(entity, example);
+		return result == 0 ? ResultMapUtils.failUpdating():ResultMapUtils.getResultMap();
+	}
+	
+	
 	
 
 	

@@ -74,6 +74,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 		String cart_str = redis.get(key);
 		// 
 		if(cart_str==null) {
+			redis.unwatch();
 			return createOrder(restaurant_id, table_num);
 		}
 		ItemCart cart = JSONObject.parseObject(cart_str, ItemCart.class);
@@ -105,6 +106,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Orders> implements OrderSe
 				e.printStackTrace();
 			}
 			ItemCart last_update_cart = JSONObject.parseObject(redis.get(key), ItemCart.class);
+			redis.unwatch();
 			redis.close();
 			return ResultMapUtils.getResultMap("操作冲突", last_update_cart);
 		}
